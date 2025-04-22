@@ -1,4 +1,3 @@
-from datetime import timedelta
 from typing import Optional
 
 from sqlalchemy import extract, select
@@ -45,18 +44,7 @@ class CRUDCharityProject(CRUDBase):
                 ).order_by('close_time'),
             )
         ).all()
-        return [
-            {
-                'charity_project_name': charity_project_name,
-                'close_time': CLOSE_TIME_FORMAT.format(
-                    days=timedelta(seconds=close_time).days,
-                    time=timedelta(seconds=close_time),
-                ),
-                'description': charity_project_description,
-            }
-            for charity_project_name, close_time, charity_project_description
-            in charity_projects
-        ]
+        return charity_projects
 
 
 charity_project_crud = CRUDCharityProject(CharityProject)

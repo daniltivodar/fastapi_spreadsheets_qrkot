@@ -33,6 +33,14 @@ AUTHENTIFICATION_BACKEND_NAME = 'jwt'
 
 CHARITY_PROJECT_NOT_FOUND = 'Благотворительный проект не найден!'
 
+COLUMN_COUNT = 11
+
+COLUMN_COUNT_ERROR = (
+    'Кол-во заданных столбцов превышает допустимое значение {column_count}'
+)
+
+DATETIME_FORMAT = '%Y/%m/%d %H:%M:%S'
+
 DUPLICATE_NAME_ERROR = (
     'Благотворительный проект с таким именем уже существует!'
 )
@@ -68,5 +76,15 @@ PROJECT_HAS_MONEY_ERROR = (
 )
 
 REGISTRATION_COMPLETE = 'Пользователь {email} зарегистрирован.'
+
+ROW_COUNT = 100
+
+ROW_COUNT_ERROR = (
+    'Кол-во заданных строк превышает допустимое значение {row_count}'
+)
+
+SPREADSHEETS_URL = 'https://docs.google.com/spreadsheets/d/{spreadsheet_id}'
+
+TABLE_TITLE = 'Отчет от {date_time}'
 
 TOKEN_URL = 'auth/jwt/login'

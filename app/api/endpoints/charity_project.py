@@ -93,7 +93,9 @@ async def update_charity_project(
     if obj_in.name:
         await check_name_duplicate(obj_in.name, session)
     return (
-        await charity_project_crud.update(charity_project, obj_in, session)
+        await charity_project_crud.update(
+            charity_project, obj_in, session, commit=False,
+        )
     )
 
 
