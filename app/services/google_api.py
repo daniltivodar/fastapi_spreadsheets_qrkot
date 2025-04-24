@@ -10,15 +10,12 @@ from app.core.config import (
     ROW_COUNT,
     ROW_COUNT_ERROR,
     settings,
-    SPREADSHEETS_URL,
     TABLE_TITLE,
 )
 
 JSON_BODY_TEMPLATE = dict(
     properties=dict(
-        title=TABLE_TITLE.format(
-            date_time=dt.now().strftime(DATETIME_FORMAT),
-        ),
+        title='Отчет от',
         locale='ru_RU',
     ),
     sheets=[dict(
@@ -34,7 +31,7 @@ JSON_BODY_TEMPLATE = dict(
     )],
 )
 TABLE_VALUES_TEMPLATE = [
-    [TABLE_TITLE.format(date_time=dt.now().strftime(DATETIME_FORMAT))],
+    ['Отчет от'],
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание'],
 ]
@@ -47,7 +44,7 @@ async def spreadsheets_create(
     json_body['properties']['title'] = TABLE_TITLE.format(
         date_time=dt.now().strftime(DATETIME_FORMAT),
     )
-    spreadsheet_id = (
+    response = (
         await wrapper_services.as_service_account(
             (await wrapper_services.discover(
                 'sheets', 'v4',
@@ -55,11 +52,8 @@ async def spreadsheets_create(
                 json=json_body,
             ),
         )
-    )['spreadsheetId']
-    return (
-        spreadsheet_id,
-        SPREADSHEETS_URL.format(spreadsheet_id=spreadsheet_id),
     )
+    return response['spreadsheetId'], response['spreadsheetUrl']
 
 
 async def set_user_permissions(
@@ -92,16 +86,18 @@ async def spreadsheets_update_value(
             for charity_project in charity_projects
         ],
     ]
-    if ROW_COUNT < len(table_values):
-        raise ValueError(ROW_COUNT_ERROR.format(row_count=ROW_COUNT))
-    if COLUMN_COUNT < max(len(columns) for columns in table_values):
-        raise ValueError(COLUMN_COUNT_ERROR.format(column_count=COLUMN_COUNT))
+    rows = len(table_values)
+    if ROW_COUNT < rows:
+        raise ValueError(ROW_COUNT_ERROR.format(row_count=rows))
+    columns = max(len(columns) for columns in table_values)
+    if COLUMN_COUNT < columns:
+        raise ValueError(COLUMN_COUNT_ERROR.format(column_count=columns))
     await wrapper_services.as_service_account(
         (await wrapper_services.discover(
             'sheets', 'v4',
         )).spreadsheets.values.update(
             spreadsheetId=spreadsheet_id,
-            range='A1:E30',
+            range=f'R1C1:R{rows}C{columns}',
             valueInputOption='USER_ENTERED',
             json={
                 'majorDimension': 'ROWS',

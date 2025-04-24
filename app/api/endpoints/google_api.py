@@ -4,7 +4,6 @@ from aiogoogle import Aiogoogle
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import SPREADSHEETS_URL
 from app.core.db import get_async_session
 from app.core.google_client import get_service
 from app.core.user import current_superuser
@@ -29,7 +28,9 @@ async def get_report(
     charity_projects = (
         await charity_project_crud.get_projects_by_completion_rate(session)
     )
-    spreadsheet_id = await spreadsheets_create(wrapper_service)
+    spreadsheet_id, spreadsheet_url = (
+        await spreadsheets_create(wrapper_service)
+    )
     await set_user_permissions(spreadsheet_id, wrapper_service)
     try:
         await spreadsheets_update_value(
@@ -37,4 +38,4 @@ async def get_report(
         )
     except ValueError as error:
         raise HTTPException(HTTPStatus.BAD_REQUEST, error)
-    return SPREADSHEETS_URL.format(spreadsheet_id=spreadsheet_id)
+    return spreadsheet_url
