@@ -1,39 +1,74 @@
 # Благотворительный фонд помощи кошкам QRKOT
 
-Благотворительный фонд помощи кошкам QRKOT, специализируется на том, чтобы помогать кошкам, создавая благотворительные сборы, где каждый желающий зарегистрированный пользователь, может пожертвовать свои деньги на помощь кошкам.
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)](https://fastapi.tiangolo.com/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.4+-red.svg)](https://www.sqlalchemy.org/)
 
-### Технологии
-- Python
-- Pydantic
-- FastApi
-- SQLAlchemy
-- Аlembic
-- SQLite
-- aiogoogle
+Благотворительный фонд помощи кошкам QRKOT специализируется на организации сбора пожертвований для помощи кошкам. Зарегистрированные пользователи могут создавать благотворительные сборы и делать пожертвования.
 
-## Установка
+## Возможности
 
-1. Склонируйте репозиторий.
+### Основной функционал
+- Создание и управление благотворительными сборами
+- Система пожертвований для зарегистрированных пользователей
+- Полная документация API (Swagger/ReDoc)
+
+### Интеграции
+- Работа с Google Sheets через API
+- Автоматическое обновление отчетов в таблицах
+- Синхронизация данных с внешними сервисами
+
+### Безопасность
+- Аутентификация и авторизация пользователей
+- Валидация данных через Pydantic
+- Защищенные соединения и обработка данных
+
+## Технологический стек
+
+- Python 3.9+ - Основной язык программирования
+- FastAPI - Современный асинхронный фреймворк
+- SQLAlchemy - ORM для работы с базой данных
+- Alembic - Управление миграциями базы данных
+- Pydantic - Валидация и сериализация данных
+- SQLite - База данных (может быть заменена на PostgreSQL)
+- aiogoogle - Асинхронный клиент для Google API
+
+## Быстрый старт
+
+### Предварительные требования
+- Python 3.9 или новее
+- Виртуальное окружение
+- Аккаунт Google для работы с API (опционально)
+
+### Установка и настройка
+
+1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/daniltivodar/QRkot_spreadsheets.git
+cd QRkot_spreadsheets
 ```
 
-2. Создайте и активируйте виртуальное окружение, заполнив его зависимостями из файла **requirements.txt**.
+2. Создайте и активируйте виртуальное окружение:
 ```bash
-cd QRKOT_SPREADSHEETS
 python -m venv venv
-source venv/Scripts/activate
+source venv/bin/activate  # Linux/MacOS
+venv\Scripts\activate  # Windows
+```
+
+3. Установите зависимости:
+```bash
 pip install -r requirements.txt
 ```
 
-3. Наполнить файл .env следующими командами:
+4. Настройте окружение:
+Создайте файл .env и заполните его по примеру:
 ```bash
 DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
 DESCRIPTION=Сервис для поддержки котиков!
 FIRST_SUPERUSER_EMAIL=admin@gmail.com
 FIRST_SUPERUSER_PASSWORD=MY_SECRET_PASSWORD
 
-# для google api
+# для Google API
 API_TYPE=service_account
 API_PROJECT_ID=idid
 API_PRIVATE_KEY_ID="1337qwerty"
@@ -48,19 +83,23 @@ API_UNIVERSE_DOMAIN=googleapis.com
 API_EMAIL=you_email@gmail.com
 ```
 
-4. Запуск:
-Создать базу данных и применить миграции можно командой:
+5. Примените миграции базы данных:
 ```bash
 alembic upgrade head
 ```
-Запустить сервис можно командой:
+
+6. Запустите сервис:
 ```bash
 uvicorn app.main:app --reload
 ```
 
-## API documentation
-**[Апи документация redoc](http://127.0.0.1:8000/redoc)**
-**[Апи документация swagger](http://127.0.0.1:8000/docs)**
+## Документация API
 
-## Создатель
-**[Данил Тиводар](https://github.com/daniltivodar)**
+После запуска сервиса документация доступна по адресам:
+- ReDoc: http://127.0.0.1:8000/redoc
+- Swagger UI: http://127.0.0.1:8000/docs
+
+## Разработчик
+
+**Данил Тиводар**  
+[GitHub Профиль](https://github.com/daniltivodar)
